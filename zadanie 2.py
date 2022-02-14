@@ -28,9 +28,8 @@ def dropper(func):
             if user['contacts']['site'] is None or re.fullmatch(pattern_site, user['contacts']['site']) is not None:
                 user['contacts']['site'] = 'None'
             yield user
-        return func()
 
-    return wrapper()
+    return wrapper
 
 
 def user_generator(file_name: str) -> Iterable[Dict]:
