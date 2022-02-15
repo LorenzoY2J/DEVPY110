@@ -11,13 +11,13 @@ pattern_site = r'(\w+.\w+.(\w+?))'
 
 
 
-def dropper(func, drop_incorrect=False):
-    def wrapper(*args, **kwargs):
+def dropper(func):
+    def wrapper(*args, drop_incorrect=None):
         if drop_incorrect is False:
-            for user in func(*args, **kwargs):
+            for user in func(*args):
                 yield user
-        else:
-            for user in func(*args, **kwargs):
+        elif drop_incorrect is True or drop_incorrect is None:
+            for user in func(*args):
                 if re.fullmatch(pattern_name, user['name']) is None:
                     continue
                 if re.fullmatch(pattern_surname, user['surname']) is None:
@@ -32,7 +32,7 @@ def dropper(func, drop_incorrect=False):
                     continue
                 if user['contacts']['site'] is None or re.fullmatch(pattern_site, user['contacts']['site']) is not None:
                     continue
-            yield user
+                yield user
 
     return wrapper
 
@@ -48,5 +48,7 @@ def user_generator(file_name: str) -> Iterable[Dict]:
 
 file_name = "users_2240.json"
 
-for user_ in dropper(user_generator)(file_name, drop_incorrect=False):
+# for user_ in dropper(user_generator)(file_name):
+for user_ in dropper(user_generator)(file_name, drop_incorrect = False):
+# for user_ in dropper(user_generator)(file_name, drop_incorrect = True):
     print(user_)
