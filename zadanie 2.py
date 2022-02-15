@@ -14,19 +14,26 @@ def dropper(func):
     def wrapper(*args, **kwargs):
         for user in func(*args, **kwargs):
             if re.fullmatch(pattern_name, user['name']) is None:
-                user['name'] = 'None'
+                # user['name'] = 'None'
+                continue
             if re.fullmatch(pattern_surname, user['surname']) is None:
-                user['surname'] = 'None'
+                # user['surname'] = 'None'
+                continue
             if re.fullmatch(pattern_sex, user['sex']) is None:
-                user['sex'] = 'None'
+                # user['sex'] = 'None'
+                continue
             if type(user['age']) != int or (int(user['age']) < 18 or int(user['age']) > 99):
-                user['age'] = 'None'
+                # user['age'] = 'None'
+                continue
             if user['contacts']['tel'] is None or re.fullmatch(pattern_tel, user['contacts']['tel']) is not None:
-                user['contacts']['tel'] = 'None'
+                # user['contacts']['tel'] = 'None'
+                continue
             if user['contacts']['email'] is None or re.fullmatch(pattern_email, user['contacts']['email']) is not None:
-                user['contacts']['email'] = 'None'
+                # user['contacts']['email'] = 'None'
+                continue
             if user['contacts']['site'] is None or re.fullmatch(pattern_site, user['contacts']['site']) is not None:
-                user['contacts']['site'] = 'None'
+                # user['contacts']['site'] = 'None'
+                continue
             yield user
 
     return wrapper
